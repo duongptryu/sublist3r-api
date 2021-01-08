@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
-from fastapi import FastAPI, status, Response
+from fastapi import FastAPI, status, Response, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -23,9 +27,17 @@ app.add_middleware(
     allow_headers=cfg.setup_CORS['allow_headers'],
 )
 
-@app.get("/")
-def hello():
-    return {"hello": "hello"}
+app.mount("/static", StaticFiles(directory="../build/static"), name="static")
+
+templates = Jinja2Templates(directory="../build")
+
+# @app.get("/test")
+# def test():
+#     pass
+
+@app.get("/", response_class=HTMLResponse)
+async def serve_spa(request: Request, ):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/api/{domain}", status_code=status.HTTP_200_OK)
