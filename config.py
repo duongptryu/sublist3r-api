@@ -3,6 +3,7 @@
 setup_CORS = {
     'origin': [
         "http://localhost:3000",
+        "localhost:3000"
     ],
     'allow_credentials': False,
     'allow_methods': ['GET'],
