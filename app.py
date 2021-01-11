@@ -26,8 +26,9 @@ app.add_middleware(
     allow_methods=cfg.setup_CORS['allow_methods'],
     allow_headers=cfg.setup_CORS['allow_headers'],
 )
+# app.mount("/", StaticFiles(directory="build"), name="public")
+app.mount("/public", StaticFiles(directory="build"), name="public")
 
-app.mount("/static", StaticFiles(directory="build/static"), name="static")
 
 templates = Jinja2Templates(directory="build")
 
